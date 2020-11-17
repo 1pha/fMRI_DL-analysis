@@ -23,3 +23,8 @@ From Class 11.24(Tue) - t-test
 (b) Perform all the **paired t-test** for the pairs of the tasks(e.g. ad vs lh, ad vs rh ... and so on.)
 
 (c) Perform one-way repeated measures ANOVA using the results from all the four tasks(i.e. suppose there are four factors and one group)
+
+---
+[+] Reference Links
+[HTMl APQC](https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/tutorials/apqc_html/apqc_ex1.html)
+[AFNI Overview](https://andysbrainbook.readthedocs.io/en/latest/AFNI/AFNI_Overview.html)
