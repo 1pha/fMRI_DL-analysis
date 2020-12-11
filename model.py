@@ -3,7 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class BasicBlock(nn.Module):
+
     def __init__(self, n_in, n_out, stride = 1):
+        
         super(BasicBlock, self).__init__()
         self.conv1 = nn.Conv3d(n_in, n_out, kernel_size = 3, stride = stride, padding = 1)
         self.bn1 = nn.BatchNorm3d(n_out)
@@ -20,9 +22,11 @@ class BasicBlock(nn.Module):
             self.shortcut = None
 
     def forward(self, x):
+
         residual = x
         if self.shortcut is not None:
             residual = self.shortcut(x)
+
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
@@ -33,8 +37,11 @@ class BasicBlock(nn.Module):
         out = self.relu2(out)
         return out
     
+
 class DeepBrain(nn.Module):
+
     def __init__(self, block=BasicBlock, inplanes=27, planes=3, drop_out=True):
+
         super(DeepBrain, self).__init__()
         self.n_classes = 1
         
@@ -73,26 +80,33 @@ class DeepBrain(nn.Module):
         self._initialize_weights()
         
     def _make_layer(self, block, planes_in, planes_out, num_blocks, pooling=False, drop_out=False):
+        
         layers = []
         if pooling:
 #             layers.append(nn.MaxPool3d(kernel_size=2, stride=2))
             layers.append(block(planes_in, planes_out, stride=2))
+
         else:
             layers.append(block(planes_in, planes_out))
+
         for i in range(num_blocks - 1):
             layers.append(block(planes_out, planes_out))
             
         return nn.Sequential(*layers)
     
     def _initialize_weights(self):
+
         for m in self.modules():
+
             if isinstance(m, nn.Conv3d):
                 nn.init.xavier_uniform(m.weight, gain=nn.init.calculate_gain('relu'))
                 if m.bias is not None:
                     m.bias.data.zero_()
+
             elif isinstance(m, nn.BatchNorm3d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
+                
             elif isinstance(m, nn.Linear):
                 n = m.weight.size(1)
                 m.weight.data.normal_(0, 0.01)
