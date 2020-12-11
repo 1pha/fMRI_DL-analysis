@@ -7,3 +7,4 @@ Whole-Brain-Conv/
 whole_brain_conv/
 blurred/
 scaled/
+__pycache__/
