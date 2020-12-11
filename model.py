@@ -52,10 +52,11 @@ class DeepBrain(nn.Module):
         self.layer_4 = self._make_layer(block, 64, 128, 2, pooling=True)
         
         self.post_conv = nn.Conv3d(128, 64, kernel_size=1)
-        
+        self.adapool = nn.AdaptiveAvgPool3d((3, 3, 1))
+
         if drop_out:
             self.classifier = nn.Sequential(
-                nn.Linear(64, 64),
+                nn.Linear(576, 64),
                 nn.ReLU(inplace=True),
                 nn.Dropout(),
                 nn.Linear(64, self.n_classes),
@@ -63,7 +64,7 @@ class DeepBrain(nn.Module):
                 nn.Sigmoid())
         else:
             self.classifier = nn.Sequential(
-                nn.Linear(64, 64),
+                nn.Linear(576, 64),
                 nn.ReLU(inplace=True),
                 nn.Linear(64, self.n_classes),
                 # nn.LogSoftmax())            
@@ -106,7 +107,8 @@ class DeepBrain(nn.Module):
         # x = self.layer_3(x)
         x = self.layer_4(x)
         x = self.post_conv(x)
-        x = x.view(-1, 64 * 1)
+        x = self.adapool(x)
+        x = x.view(-1, 64 * 9)
         
         x = self.classifier(x)
         
