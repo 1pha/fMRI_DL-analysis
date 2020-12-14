@@ -43,7 +43,7 @@ class DeepBrain(nn.Module):
     def __init__(self, block=BasicBlock, inplanes=27, planes=3, drop_out=True):
 
         super(DeepBrain, self).__init__()
-        self.n_classes = 1
+        self.n_classes = 2
         
         self.preBlock = nn.Sequential(
             nn.Conv3d(inplanes, planes, kernel_size=1, padding=0),
@@ -67,15 +67,15 @@ class DeepBrain(nn.Module):
                 nn.ReLU(inplace=True),
                 nn.Dropout(),
                 nn.Linear(64, self.n_classes),
-                # nn.LogSoftmax())
-                nn.Sigmoid())
+                nn.LogSoftmax())
+                # nn.Sigmoid())
         else:
             self.classifier = nn.Sequential(
                 nn.Linear(576, 64),
                 nn.ReLU(inplace=True),
                 nn.Linear(64, self.n_classes),
-                # nn.LogSoftmax())            
-                nn.Sigmoid())
+                nn.LogSoftmax())            
+                # nn.Sigmoid())
         
         self._initialize_weights()
         
